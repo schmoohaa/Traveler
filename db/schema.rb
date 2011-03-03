@@ -10,6 +10,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 0) do
+ActiveRecord::Schema.define(:version => 20110303170700) do
+
+  create_table "trip_segments", :force => true do |t|
+    t.string   "name"
+    t.string   "origin"
+    t.string   "destination"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.string   "mode_of_transport"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

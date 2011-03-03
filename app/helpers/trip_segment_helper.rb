@@ -1,0 +1,2 @@
+module TripSegmentHelper
+end

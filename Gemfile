@@ -11,6 +11,9 @@ group :test, :development do
   gem "rspec-rails", "~> 2.4"
 end
 
+gem 'validates_timeliness', '~> 3.0.2'
+
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
