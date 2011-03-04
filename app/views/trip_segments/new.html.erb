@@ -1,2 +1,15 @@
 <% # do it here for possible caching? %>
-<% trip_segment = TripSegment.new %>
+<% @trip_segment = TripSegment.new %>
+
+Add a Trip Segment:
+<br>
+<%= form_for :trip_segment, @trip_segment, :url => { :action => "create" } do |f| %>
+  <%= label_tag 'name' %>
+  <%= f.text_field :name %>
+  <%= label_tag 'origin' %>
+  <%= f.text_field :origin %>
+  <%= label_tag 'destination' %>
+  <%= f.text_field :destination %>
+  <br>
+  <%= submit_tag "Create" %>
+<% end %>

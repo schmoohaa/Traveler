@@ -1,1 +1,20 @@
-Hello World
+<p>TRIP SEGMENTS:</p>
+<div id="trip_segments">
+  <% TripSegment.find_each(:batch_size => 2) do |segment| %>
+    <%= render :partial => "trip_segment", :object => segment %>
+  <% end%>
+</div>
+
+<p>
+<%= "No Trip Segments yet: get going!" unless TripSegment.exists? %>
+
+<div id="trip_segment_nav">
+  <br>
+  <br>
+  <%= link_to "Order by origin", order_by_origin_trip_segments_path, :remote => true %>
+
+  <br>
+  <br>
+  <%= link_to "Add a Trip Segment", new_trip_segment_path %>
+</div>
+<%= render :partial => "back" %>

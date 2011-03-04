@@ -7,15 +7,29 @@ describe TripSegmentsController do
       get :index
       response.should be_success
     end
-  end
+    it "should return trip segments" do
+      # TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now)
+      # TripSegment.create!(:name=>"RTW Trip: seg 1",:origin=>"ord",:destination=>"hkg",:start_date=>Time.now)
+      # TripSegment.create!(:origin=>"hkg",:destination=>"sin",:start_date=>Time.now)
+      #
+      # get :index
 
+      # WHAT DO I TEST FOR GIVEN THE VIEW CONTAINS THE CALL? IS THIS RIGHT? DONE FOR CACHEING POSSIBILITIES.
+
+
+    end
+  end
 
   context "show" do
     it "should return successfully" do
-
+      @trip_segment = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now)
+      get :show, :id => @trip_segment
+      response.should be_success
     end
-    it "should contain trip_segment" do
-
+    it "should contain a trip_segment" do
+      @trip_segment = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now)
+      get :show, :id => @trip_segment
+      assigns(:trip_segment).should == @trip_segment
     end
   end
 
@@ -27,14 +41,64 @@ describe TripSegmentsController do
   end
 
   context "create" do
-    it "should " do
-
+    it "should respond successfully with index page" do
+      do_post_new_trip
+      response.should redirect_to(trip_segments_path)
     end
-    it "should return to index if successful" do
-
+    it "should create add new trip_segment" do
+      expect { do_post_new_trip }.to change(TripSegment, :count).by(1)
+    end
+    it "should not create a new trip if errors" do
+      expect { do_post_new_trip(:trip_segment => {:origin => nil} ) }.to change(TripSegment, :count).by(0)
     end
     it "should return to form if errors" do
+      do_post_new_trip(:trip_segment => {:origin => nil} )
+      response.should render_template(:new)
+    end
 
+    def do_post_new_trip(params={})
+      post :create, {
+        :trip_segment => {
+            :name       => 'Best Trip Ever!',
+            :origin => 'Chicago, Illinois',
+            :destination => 'Singapore, Singapore',
+            :start_date => Time.now,
+            :end_date => Time.new + 5.days
+          }
+        }.update(params)
+    end
+  end
+
+  context "index_ordered_by_origin" do
+    it "should render 200" do
+      xhr :get, :index_ordered_by_origin
+      response.should be_success
+    end
+    it "should list trip segments in order" do
+      trip1 = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now)
+      trip2 = TripSegment.create!(:name=>"RTW Trip: seg 1",:origin=>"ord",:destination=>"hkg",:start_date=>Time.now)
+      trip3 = TripSegment.create!(:origin=>"hkg",:destination=>"sin",:start_date=>Time.now)
+
+      xhr :get, :index_ordered_by_origin
+
+      assigns(:trip_segments).first.should == trip3
+      assigns(:trip_segments).last.should == trip1
+      assigns(:trip_segments).count.should == 3
+    end
+  end
+
+  context "limit_by_destination" do
+    it "should render 200" do
+      trip1 = TripSegment.create!(:origin=>"Chicago",:destination=>"Dubai, UAE",:start_date=>Time.now)
+      trip2 = TripSegment.create!(:name=>"RTW Trip: seg 1",:origin=>"Chicago",:destination=>"Tokyo, Japan",:start_date=>Time.now)
+      trip3 = TripSegment.create!(:origin=>"Paris, France",:destination=>"Prague, Czech Republic",:start_date=>Time.now)
+      trip4 = TripSegment.create!(:origin=>"Istanbul, Turkey",:destination=>"Dubai, UAE",:start_date=>Time.now)
+      trip5 = TripSegment.create!(:origin=>"Dubai, UAE",:destination=>"London, Heathrow",:start_date=>Time.now)
+
+      xhr :get, :limit_by_destination, :destination => "Dubai, UAE"
+
+      assigns(:trip_segments).should include(trip1,trip4)
+      assigns(:trip_segments).should_not include(trip2,trip3,trip5)
     end
   end
 end

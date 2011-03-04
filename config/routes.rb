@@ -13,6 +13,10 @@ Traveler::Application.routes.draw do
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
+  match "trip_segments/ordered" => "trip_segments#index_ordered_by_origin", :as => :order_by_origin_trip_segments
+  match "trip_segments/destination/:destination" => "trip_segments#limit_by_destination", :as => :destination
+
+
   resources :trip_segments
 
 

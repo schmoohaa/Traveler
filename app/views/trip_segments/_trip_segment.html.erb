@@ -1,0 +1,4 @@
+<%= link_to trip_segment.name, trip_segment_path(trip_segment.id) %>:
+<%= trip_segment.origin %>==>
+<%= link_to trip_segment.destination, destination_path(trip_segment.destination), :remote => true %>
+<br>

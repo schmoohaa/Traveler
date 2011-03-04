@@ -1,0 +1,14 @@
+<p>Trip Segment Name: <%= @trip_segment.name %></p>
+
+Route:
+<%= @trip_segment.origin %>==><%= @trip_segment.destination %>
+
+<br>
+<br>
+<br>
+<%= render :partial => "back" %>
+
+
+<script>
+  $("trip_segment_back").show();
+</script>
