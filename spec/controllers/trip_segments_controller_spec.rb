@@ -122,6 +122,10 @@ describe TripSegmentsController do
 
   context "limit_by_destination" do
     it "should render 200" do
+       xhr :get, :limit_by_destination, :destination => "Dubai, UAE"
+       response.should be_success
+     end
+    it "should return content with some trips visible, others not" do
       trip1 = TripSegment.create!(:origin=>"Chicago",:destination=>"Dubai, UAE",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
       trip2 = TripSegment.create!(:name=>"RTW Trip: seg 1",:origin=>"Chicago",:destination=>"Tokyo, Japan",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
       trip3 = TripSegment.create!(:origin=>"Paris, France",:destination=>"Prague, Czech Republic",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
@@ -133,5 +137,12 @@ describe TripSegmentsController do
       assigns(:trip_segments).should include(trip1,trip4)
       assigns(:trip_segments).should_not include(trip2,trip3,trip5)
     end
+  end
+
+  context "order_by_distance_destination" do
+    it "should render 200" do
+       get :order_by_distance_destination
+       response.should be_success
+     end
   end
 end

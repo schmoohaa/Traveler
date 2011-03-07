@@ -9,6 +9,7 @@ class TripSegment < ActiveRecord::Base
   after_validation :generate_trip_segment_name, :unless => :name?
 
   scope :destination, lambda { |dest| where("destination = ?", dest)}     # Rails3 scope
+  scope :order_by_miles_to_destination, lambda { |dest| destination(dest).order("distance_in_miles DESC") }    # Rails3 scoper....reusing another scope in sort of a contrived way.
 
   def validation_origin_destination
     errors.add(:base,"Origin and Destination must be different") if origin == destination    # Rails3 slightly different?

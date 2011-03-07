@@ -10,7 +10,7 @@
 <%= "No Trip Segments yet: get going!" unless TripSegment.exists? %>
 
 <div id="trip_segment_nav">
-  <%= link_to "Order by origin", order_by_origin_trip_segments_path, :remote => true %>
+  <%= link_to "Order by origin", order_by_origin_trip_segments_trip_segments_path, :remote => true %>
 
   <br>
   <br>

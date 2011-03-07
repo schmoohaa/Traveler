@@ -41,4 +41,8 @@ class TripSegmentsController < ApplicationController
   def limit_by_destination
     @trip_segments = TripSegment.destination(params[:destination])  # Rails3 use of scope method
   end
+
+  def order_by_distance_destination
+
+  end
 end
