@@ -9,7 +9,9 @@ gem 'sqlite3'
 
 group :test, :development do
   gem "rspec-rails", "~> 2.4"
+  gem 'watchr'
 end
+gem 'spork', '~> 0.9.0.rc'
 
 gem 'validates_timeliness', '~> 3.0.2'
 
