@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110303170700) do
+ActiveRecord::Schema.define(:version => 20110307171025) do
 
   create_table "trip_segments", :force => true do |t|
     t.string   "name"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20110303170700) do
     t.string   "mode_of_transport"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "distance_in_miles", :default => 0
   end
 
 end

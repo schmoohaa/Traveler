@@ -1,11 +1,11 @@
 <p>Trip Segment Name: <%= @trip_segment.name %></p>
 
-Route:
-<%= @trip_segment.origin %>==><%= @trip_segment.destination %>
+<div>
+<%= link_to "Route: #{@trip_segment.origin} ==> #{@trip_segment.destination}", edit_trip_segment_path(@trip_segment) %>
+<br>
+Miles Traveled: <%= @trip_segment.distance_in_miles %>
+</div>
 
-<br>
-<br>
-<br>
 <%= render :partial => "back" %>
 
 

@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe TripSegmentsController do
 
+  before(:each) do
+    @distance_traveled = rand(6000)+1000
+  end
+
   context "index" do
     it "should return succesfully" do
       get :index
@@ -22,12 +26,12 @@ describe TripSegmentsController do
 
   context "show" do
     it "should return successfully" do
-      @trip_segment = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now)
+      @trip_segment = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
       get :show, :id => @trip_segment
       response.should be_success
     end
     it "should contain a trip_segment" do
-      @trip_segment = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now)
+      @trip_segment = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
       get :show, :id => @trip_segment
       assigns(:trip_segment).should == @trip_segment
     end
@@ -37,6 +41,34 @@ describe TripSegmentsController do
     it "should return new trip segment form successfully" do
       get :new
       response.should be_success
+    end
+  end
+
+  context "edit" do
+    it "should return edit form successfully" do
+      @trip_segment = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
+      get :edit, :id => @trip_segment
+      response.should be_success
+    end
+    it "should show correct trip" do
+      @trip_segment = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
+      get :edit, :id => @trip_segment
+      assigns(:trip_segment).should == @trip_segment
+    end
+  end
+
+  context "update" do
+    it "should update trip and redirect to index successfully" do
+      @trip_segment = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
+
+      put :update, :id => @trip_segment, :distance_in_miles => 100000
+      response.should redirect_to(trip_segments_path)
+    end
+    it "should return edit form if error when updating" do
+      @trip_segment = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
+
+      put :update, :id => @trip_segment, :trip_segment => {:distance_in_miles => nil}
+      response.should render_template(:edit)
     end
   end
 
@@ -63,7 +95,8 @@ describe TripSegmentsController do
             :origin => 'Chicago, Illinois',
             :destination => 'Singapore, Singapore',
             :start_date => Time.now,
-            :end_date => Time.new + 5.days
+            :end_date => Time.new + 5.days,
+            :distance_in_miles => @distance_traveled
           }
         }.update(params)
     end
@@ -75,9 +108,9 @@ describe TripSegmentsController do
       response.should be_success
     end
     it "should list trip segments in order" do
-      trip1 = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now)
-      trip2 = TripSegment.create!(:name=>"RTW Trip: seg 1",:origin=>"ord",:destination=>"hkg",:start_date=>Time.now)
-      trip3 = TripSegment.create!(:origin=>"hkg",:destination=>"sin",:start_date=>Time.now)
+      trip1 = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
+      trip2 = TripSegment.create!(:name=>"RTW Trip: seg 1",:origin=>"ord",:destination=>"hkg",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
+      trip3 = TripSegment.create!(:origin=>"hkg",:destination=>"sin",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
 
       xhr :get, :index_ordered_by_origin
 
@@ -89,11 +122,11 @@ describe TripSegmentsController do
 
   context "limit_by_destination" do
     it "should render 200" do
-      trip1 = TripSegment.create!(:origin=>"Chicago",:destination=>"Dubai, UAE",:start_date=>Time.now)
-      trip2 = TripSegment.create!(:name=>"RTW Trip: seg 1",:origin=>"Chicago",:destination=>"Tokyo, Japan",:start_date=>Time.now)
-      trip3 = TripSegment.create!(:origin=>"Paris, France",:destination=>"Prague, Czech Republic",:start_date=>Time.now)
-      trip4 = TripSegment.create!(:origin=>"Istanbul, Turkey",:destination=>"Dubai, UAE",:start_date=>Time.now)
-      trip5 = TripSegment.create!(:origin=>"Dubai, UAE",:destination=>"London, Heathrow",:start_date=>Time.now)
+      trip1 = TripSegment.create!(:origin=>"Chicago",:destination=>"Dubai, UAE",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
+      trip2 = TripSegment.create!(:name=>"RTW Trip: seg 1",:origin=>"Chicago",:destination=>"Tokyo, Japan",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
+      trip3 = TripSegment.create!(:origin=>"Paris, France",:destination=>"Prague, Czech Republic",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
+      trip4 = TripSegment.create!(:origin=>"Istanbul, Turkey",:destination=>"Dubai, UAE",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
+      trip5 = TripSegment.create!(:origin=>"Dubai, UAE",:destination=>"London, Heathrow",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
 
       xhr :get, :limit_by_destination, :destination => "Dubai, UAE"
 

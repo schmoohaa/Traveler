@@ -1,5 +1,6 @@
 <p>TRIP SEGMENTS:</p>
 <div id="trip_segments">
+  <!-- Rails3 querying -->
   <% TripSegment.find_each(:batch_size => 2) do |segment| %>
     <%= render :partial => "trip_segment", :object => segment %>
   <% end%>
@@ -9,8 +10,6 @@
 <%= "No Trip Segments yet: get going!" unless TripSegment.exists? %>
 
 <div id="trip_segment_nav">
-  <br>
-  <br>
   <%= link_to "Order by origin", order_by_origin_trip_segments_path, :remote => true %>
 
   <br>

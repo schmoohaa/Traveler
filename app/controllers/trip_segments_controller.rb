@@ -4,7 +4,7 @@ class TripSegmentsController < ApplicationController
   end
 
   def index_ordered_by_origin
-    @trip_segments = TripSegment.order("origin")  # new method for ordering
+    @trip_segments = TripSegment.order("origin")  # Rails3 new method for ordering
   end
 
   def show
@@ -12,7 +12,21 @@ class TripSegmentsController < ApplicationController
     @trip_segment = TripSegment.find(params[:id])
   end
 
+  def edit
+    @trip_segment = TripSegment.find(params[:id])
+  end
+
   def new
+  end
+
+  def update
+    @trip_segment = TripSegment.find(params[:id])
+    if @trip_segment.update_attributes(params[:trip_segment])
+      redirect_to trip_segments_path
+    else
+      render :edit
+    end
+
   end
 
   def create
@@ -25,6 +39,6 @@ class TripSegmentsController < ApplicationController
   end
 
   def limit_by_destination
-    @trip_segments = TripSegment.destination(params[:destination])
+    @trip_segments = TripSegment.destination(params[:destination])  # Rails3 use of scope method
   end
 end

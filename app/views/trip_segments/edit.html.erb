@@ -1,0 +1,23 @@
+<p>Edit Trip Segment:</p>
+
+<div>
+  <%= form_for :trip_segment, @trip_segment, :url => { :action => "update"}, :html => {:method => :put}  do |f| %>
+
+    <%= label_tag 'name' %>
+    <%= f.text_field :name %><br>
+    <%= label_tag 'origin' %>
+    <%= f.text_field :origin %><br>
+    <%= label_tag 'destination' %>
+    <%= f.text_field :destination %><br>
+    <%= label_tag 'miles traveled' %>
+    <%= f.text_field :distance_in_miles %>
+
+    <br>
+    <%= submit_tag "Update" %>
+  <% end %>
+</div>
+<%= render :partial => "back" %>
+
+<script>
+  $("trip_segment_back").show();
+</script>
