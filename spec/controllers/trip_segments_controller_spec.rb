@@ -124,7 +124,7 @@ describe TripSegmentsController do
     it "should render 200" do
        xhr :get, :limit_by_destination, :destination => "Dubai, UAE"
        response.should be_success
-     end
+    end
     it "should return content with some trips visible, others not" do
       trip1 = TripSegment.create!(:origin=>"Chicago",:destination=>"Dubai, UAE",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
       trip2 = TripSegment.create!(:name=>"RTW Trip: seg 1",:origin=>"Chicago",:destination=>"Tokyo, Japan",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
@@ -139,10 +139,21 @@ describe TripSegmentsController do
     end
   end
 
-  context "order_by_distance_destination" do
-    it "should render 200" do
-       get :order_by_distance_destination
-       response.should be_success
-     end
+  context "delete trip segment" do
+    it "should  return 200" do
+      deleted_trip = TripSegment.create!(:origin=>"Chicago",:destination=>"Dubai, UAE",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
+      xhr :delete, :destroy, :id => deleted_trip.id
+      response.should be_success
+    end
   end
+
+  # context "order_by_distance" do
+  #   it "should render 200" do
+  #     xhr :get, :order_by_distance, :destination => "Dubai, UAE"
+  #
+  #     # xhr :get, :order_by_distance_destination, :destination => "Dubai, UAE"
+  #     # xhr :get, :new, :organization_id => @org.id
+  #     # response.should be_success
+  #   end
+  # end
 end

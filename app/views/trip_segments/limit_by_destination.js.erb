@@ -1,3 +1,5 @@
 $("trip_segments").update("<%= escape_javascript(render(@trip_segments))%>");
 $("trip_segment_nav").hide()
 $("trip_segment_back").show()
+
+$("trip_segment_dest_order").update("<%= escape_javascript(link_to 'Order by distance',order_by_destination_distance_path(@destination), :remote => true)%>").show();

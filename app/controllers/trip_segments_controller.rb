@@ -42,7 +42,13 @@ class TripSegmentsController < ApplicationController
     @trip_segments = TripSegment.destination(params[:destination])  # Rails3 use of scope method
   end
 
-  def order_by_distance_destination
+  def order_by_distance
+    @destination = params[:destination]
+    @trip_segments = TripSegment.order_by_miles_to_destination(@destination)  # Rails3 use of scope method
+  end
 
+  def destroy
+    @destroyed_trip_segment = params[:id]
+    TripSegment.find(@destroyed_trip_segment).delete
   end
 end

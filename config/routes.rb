@@ -15,14 +15,16 @@ Traveler::Application.routes.draw do
 
   # match "trip_segments/ordered" => "trip_segments#index_ordered_by_origin", :as => :order_by_origin_trip_segments   # <<<< can this be done better?
 
-  match "trip_segments/destination/orderby" => "trip_segments#order_by_distance_destination", :as => :order_by_distance_destination, :via => :get
+  # match "trip_segments/destination/orderby" => "trip_segments#order_by_distance_destination", :as => :order_by_distance_destination, :via => :get
+
+  match "trip_segments/order_by_distance/:destination", :to => "trip_segments#order_by_distance", :as => :order_by_destination_distance
+
+  match "trip_segments/destination/:destination" => "trip_segments#limit_by_destination", :as => :destination, :via => :get       # , :contraints => { :destination => /^[a-zA-Z0-9]*$/}
 
   resources :trip_segments do
-    collection do
-      get :index_ordered_by_origin, :as => :order_by_origin_trip_segments
-    end
+    get :index_ordered_by_origin, :as => :order_by_origin, :on => :collection
   end
-  match "trip_segments/destination/:destination" => "trip_segments#limit_by_destination", :as => :destination, :via => :get       # , :contraints => { :destination => /^[a-zA-Z0-9]*$/}
+
 
   # *** Try screwing aorund with this ***
   # match "trip_segments/vacation_spot/:destination" => redirect("trip_segments/destination/:destination")
