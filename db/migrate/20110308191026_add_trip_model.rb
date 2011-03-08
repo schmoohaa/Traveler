@@ -1,0 +1,13 @@
+class AddTripModel < ActiveRecord::Migration
+  def self.up
+    create_table :trips do |t|
+      t.string  :name
+      t.string  :who
+      t.timestamps
+    end
+  end
+
+  def self.down
+    drop_table :trips
+  end
+end

@@ -1,0 +1,11 @@
+<% @trip = Trip.new %>
+
+<p>Add a Trip:</p>
+<div>
+  <%= form_for :trip, @trip, :url => { :action => "create" } do |f| %>
+    <%= label_tag 'name' %>
+    <%= f.text_field :name %>
+    <br>
+    <%= submit_tag "Create" %>
+  <% end %>
+</div>

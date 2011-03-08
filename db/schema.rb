@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110307171025) do
+ActiveRecord::Schema.define(:version => 20110308200003) do
 
   create_table "trip_segments", :force => true do |t|
     t.string   "name"
@@ -22,6 +22,14 @@ ActiveRecord::Schema.define(:version => 20110307171025) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "distance_in_miles", :default => 0
+    t.integer  "trip_id"
+  end
+
+  create_table "trips", :force => true do |t|
+    t.string   "name"
+    t.string   "who"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

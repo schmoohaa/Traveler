@@ -24,14 +24,29 @@ describe TripSegmentsController do
     end
   end
 
-  context "show" do
+  context "index_by_trip" do
     it "should return successfully" do
-      @trip_segment = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
+      @trip = stub_model(Trip)
+
+      get :index_by_trip, :trip_id => @trip.id
+
+    end
+    it "should assign segments" do
+
+    end
+  end
+
+  context "show" do
+    before(:each) do
+      @trip_segment = stub_model(TripSegment)
+      TripSegment.stub!(:find).and_return(@trip_segment)
+    end
+
+    it "should return successfully" do
       get :show, :id => @trip_segment
       response.should be_success
     end
     it "should contain a trip_segment" do
-      @trip_segment = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
       get :show, :id => @trip_segment
       assigns(:trip_segment).should == @trip_segment
     end
@@ -45,27 +60,35 @@ describe TripSegmentsController do
   end
 
   context "edit" do
+    before(:each) do
+      @trip_segment = stub_model(TripSegment)
+      TripSegment.stub!(:find).and_return(@trip_segment)
+    end
+
     it "should return edit form successfully" do
-      @trip_segment = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
       get :edit, :id => @trip_segment
       response.should be_success
     end
     it "should show correct trip" do
-      @trip_segment = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
       get :edit, :id => @trip_segment
       assigns(:trip_segment).should == @trip_segment
     end
   end
 
   context "update" do
+    before(:each) do
+      @trip_segment = stub_model(TripSegment)
+      TripSegment.stub!(:find).and_return(@trip_segment)
+    end
+
     it "should update trip and redirect to index successfully" do
-      @trip_segment = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
+      @trip_segment.stub!(:update_attributes).and_return(true)
 
       put :update, :id => @trip_segment, :distance_in_miles => 100000
       response.should redirect_to(trip_segments_path)
     end
     it "should return edit form if error when updating" do
-      @trip_segment = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
+      @trip_segment.stub!(:update_attributes).and_return(false)
 
       put :update, :id => @trip_segment, :trip_segment => {:distance_in_miles => nil}
       response.should render_template(:edit)
@@ -141,8 +164,11 @@ describe TripSegmentsController do
 
   context "delete trip segment" do
     it "should  return 200" do
-      deleted_trip = TripSegment.create!(:origin=>"Chicago",:destination=>"Dubai, UAE",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
-      xhr :delete, :destroy, :id => deleted_trip.id
+      @deleted_trip = stub_model(TripSegment)
+      TripSegment.stub!(:find).and_return(@deleted_trip)
+      TripSegment.stub!(:delete).and_return(true)
+
+      xhr :delete, :destroy, :id => @deleted_trip.id
       response.should be_success
     end
   end

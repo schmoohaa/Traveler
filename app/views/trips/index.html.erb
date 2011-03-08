@@ -1,0 +1,18 @@
+<p>ALL TRIPS:</p>
+<div id="trips">
+  <% Trip.find_each(:batch_size => 2) do |trip| %>
+    <div id="<%= "trip_"+trip.id.to_s %>">
+      <%= trip.name %>
+    </div>
+  <% end%>
+</div>
+
+<div>
+<br>
+<%= link_to "Add a Trip", new_trip_path %>
+</div>
+
+<div>
+<br>
+<%= link_to "Trip Segments", trip_segments_path %>
+</div>

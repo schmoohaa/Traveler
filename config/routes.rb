@@ -18,12 +18,15 @@ Traveler::Application.routes.draw do
   # match "trip_segments/destination/orderby" => "trip_segments#order_by_distance_destination", :as => :order_by_distance_destination, :via => :get
 
   match "trip_segments/order_by_distance/:destination", :to => "trip_segments#order_by_distance", :as => :order_by_destination_distance
-
   match "trip_segments/destination/:destination" => "trip_segments#limit_by_destination", :as => :destination, :via => :get       # , :contraints => { :destination => /^[a-zA-Z0-9]*$/}
+  match "trip_segments/index_by_trip" => "trip_segments#index_by_trip", :as => :all_segments_for_trip, :via => :get
 
   resources :trip_segments do
     get :index_ordered_by_origin, :as => :order_by_origin, :on => :collection
   end
+
+  resources :trips
+
 
 
   # *** Try screwing aorund with this ***
@@ -67,7 +70,7 @@ Traveler::Application.routes.draw do
   # just remember to delete public/index.html.
   # root :to => "welcome#index"
 
-  root :to => "trip_segments#index"
+  root :to => "trips#index"
 
 
   # See how all your routes lay out with "rake routes"

@@ -4,15 +4,17 @@
 <p>Add a Trip Segment:</p>
 <div>
   <%= form_for :trip_segment, @trip_segment, :url => { :action => "create" } do |f| %>
-    <%= label_tag 'name' %>
-    <%= f.text_field :name %>
-    <%= label_tag 'origin' %>
-    <%= f.text_field :origin %>
-    <%= label_tag 'destination' %>
-    <%= f.text_field :destination %>
-    <%= label_tag 'miles traveled' %>
-    <%= f.text_field :distance_in_miles %>
 
+    <%= select("trip_segment", "trip_id", Trip.all.collect {|t| [ t.name, t.id ] }) %><br>
+
+    <%= label_tag 'name' %>
+    <%= f.text_field :name, :label => 'name' %><br>
+    <%= label_tag 'origin' %>
+    <%= f.text_field :origin %><br>
+    <%= label_tag 'destination' %>
+    <%= f.text_field :destination %><br>
+    <%= label_tag 'miles traveled' %>
+    <%= f.text_field :distance_in_miles %><br>
     <br>
     <%= submit_tag "Create" %>
   <% end %>

@@ -3,6 +3,10 @@ class TripSegmentsController < ApplicationController
   def index
   end
 
+  def index_by_trip
+
+  end
+
   def index_ordered_by_origin
     @trip_segments = TripSegment.order("origin")  # Rails3 new method for ordering
   end
