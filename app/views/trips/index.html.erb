@@ -2,7 +2,7 @@
 <div id="trips">
   <% Trip.find_each(:batch_size => 2) do |trip| %>
     <div id="<%= "trip_"+trip.id.to_s %>">
-      <%= trip.name %>  ====> <%= link_to "trip segments", all_segments_for_trip_path(trip.id) %>
+      <%= link_to trip.name, trip_path(trip.id) %> ====> <%= link_to "trip segments", all_segments_for_trip_path(trip.id) %>
     </div>
   <% end%>
 </div>

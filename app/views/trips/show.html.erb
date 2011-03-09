@@ -1,4 +1,16 @@
 <p>TripName: <%= @trip.name %></p>
 
+<% if @trip.trip_segments.exists? %>
+  <div>
+  Total miles: <%= @trip.total_miles %> via <%= pluralize(@trip.trip_segments.count, 'segment') %><br>
+  Longest segment: <%= @trip.longest_segment_of_trip.name %> of <%= @trip.longest_segment_of_trip.distance_in_miles %> miles<br>
+  <br>
+<% end %>
+Longest segment (all trips): <%= TripSegment.longest_segment.distance_in_miles %>
+
+
+</div>
+
+<br>
 <br>
 <%= link_to "Back to All Trips", trips_path %>

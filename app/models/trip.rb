@@ -3,6 +3,13 @@ class Trip < ActiveRecord::Base
 
   has_many :trip_segments
 
+  def total_miles
+    trip_segments.sum("distance_in_miles")
+  end
+
+  def longest_segment_of_trip
+    trip_segments.order("distance_in_miles").last  # <<< does limit 1 under the covers
+  end
 end
 
 

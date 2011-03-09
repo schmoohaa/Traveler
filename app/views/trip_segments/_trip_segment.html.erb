@@ -9,5 +9,9 @@
   <div>
   <%= trip_segment.distance_in_miles %> miles
   </div>
+  <div>
+    Started: <%= trip_segment.start_date.to_date.to_formatted_s(:long) unless trip_segment.start_date.nil? %><br>
+    Finished: <%= trip_segment.end_date.to_date.to_formatted_s(:long) unless trip_segment.end_date.nil? %><br>
+  </div>
   <br>
 </div>

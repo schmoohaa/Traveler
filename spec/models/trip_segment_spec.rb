@@ -98,4 +98,20 @@ describe TripSegment do
     #
     # end
   end
+
+  context "longest_segment" do
+    it "should return longest segment of all trips" do
+      trips = []
+      5.times  {|i| trips << Trip.create!(:name => i.to_s)}
+      max_miles = 0
+
+      10.times do
+        seg = TripSegment.create!(:origin => "X", :destination => "Y", :distance_in_miles => rand(3000)+1000, :trip_id => trips[rand(trips.length-1)].id)
+        @longest_segment = seg            if seg.distance_in_miles > max_miles   # <<< better way?
+        max_miles = seg.distance_in_miles if seg.distance_in_miles > max_miles
+      end
+
+      TripSegment.longest_segment.should == @longest_segment
+    end
+  end
 end

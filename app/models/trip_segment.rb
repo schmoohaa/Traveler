@@ -20,4 +20,8 @@ class TripSegment < ActiveRecord::Base
   def generate_trip_segment_name
     self.name = "#{origin} - #{destination}"
   end
+
+  def self.longest_segment
+    order("distance_in_miles").last
+  end
 end

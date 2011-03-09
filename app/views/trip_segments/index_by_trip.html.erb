@@ -6,7 +6,7 @@
 </div>
 
 <p>
-<%= "No Trip Segments yet: get going!" unless TripSegment.exists? %>
+<%= "No Trip Segments yet: get going!" unless @trip.trip_segments.exists? %>
 
 <div id="trip_segment_nav">
   <br>
