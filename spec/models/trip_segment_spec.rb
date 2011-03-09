@@ -114,4 +114,32 @@ describe TripSegment do
       TripSegment.longest_segment.should == @longest_segment
     end
   end
+
+  context "search" do
+    # trying to implement dynamic scopes across multiple fields
+    it "should return trip segments with origin or destination of the search token" do
+      @trip = Trip.create!(:name => "RTW")
+      @locale_to_search = "Hong Kong"
+      @other_locales = ["Chicago","Bangkok","Prague","St.Petersburg","Copenhagen","Tokyo","Shanghai","Paris","Dubai","Singapore","Seoul", "Macua", "Las Vegas"]
+
+      10.times do
+        TripSegment.create!(:origin => @other_locales[rand(@other_locales.length-1)]+"(org)", :destination => @other_locales[rand(@other_locales.length-1)]+"(dest)", :distance_in_miles => rand(3000)+1000, :trip_id => @trip.id)
+      end
+
+      orginArr = [3,5,7]
+      destArr = [2,6,10]
+      orginArr.each do |i|
+        seg = TripSegment.find(i)
+        seg.origin=(@locale_to_search)
+        seg.save!
+      end
+      destArr.each do |i|
+        seg = TripSegment.find(i)
+        seg.destination=(@locale_to_search)
+        seg.save!
+       end
+
+      TripSegment.search(@locale_to_search).size.should == (destArr.size + orginArr.size)
+    end
+  end
 end

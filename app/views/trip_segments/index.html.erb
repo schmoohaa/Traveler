@@ -9,6 +9,15 @@
 <p>
 <%= "No Trip Segments yet: get going!" unless TripSegment.exists? %>
 
+<div>
+  <%= form_tag('/trip_segments/search', options = {:method => "get"} ) do %>
+    <%= label_tag 'name' %>
+    <%= text_field_tag :locale %>
+    <%= submit_tag "Search" %>
+  <% end %>
+</div>
+<br><br>
+
 <div id="trip_segment_nav">
   <%= link_to "Order by origin", order_by_origin_trip_segments_path, :remote => true %>
 

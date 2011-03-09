@@ -1,0 +1,20 @@
+<p>TRIP SEGMENTS for <%= @locale %>:</p>
+<div id="trip_segments">
+  <% @trip_segments.each do |segment| %>
+    <%= render :partial => "trip_segment", :object => segment %>
+  <% end%>
+</div>
+
+<p>
+<%= "No Trip Segments yet: get going!" unless @trip_segments.exists? %>
+
+<div id="trip_segment_nav">
+  <br>
+  <%= link_to "Add a Trip Segment", new_trip_segment_path %>
+</div>
+<div id="trip_segment_dest_order" style="display:none">
+</div>
+<%= render :partial => "back" %>
+
+<br>
+<%= link_to "All Trips", trips_path %>

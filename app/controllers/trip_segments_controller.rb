@@ -55,4 +55,11 @@ class TripSegmentsController < ApplicationController
     @destroyed_trip_segment = params[:id]
     TripSegment.find(@destroyed_trip_segment).delete
   end
+
+  def search
+    @locale = params[:locale]
+    @trip_segments = TripSegment.search(@locale )
+
+    render "searched_segments"
+  end
 end

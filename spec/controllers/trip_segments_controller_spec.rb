@@ -180,6 +180,20 @@ describe TripSegmentsController do
     end
   end
 
+  context "search" do
+    it "should return successfully" do
+      @search_locale = "Hong Kong"
+      @searched_trip = stub_model(TripSegment, :origin => @search_locale)
+      TripSegment.stub!(:search).and_return(@searched_trip)
+
+      xhr :get, :search, :locale => @search_locale
+
+      assigns(:trip_segments).should == @searched_trip
+      assigns(:locale).should == @search_locale
+      response.should be_success
+    end
+  end
+
   # context "order_by_distance" do
   #   it "should render 200" do
   #     xhr :get, :order_by_distance, :destination => "Dubai, UAE"
