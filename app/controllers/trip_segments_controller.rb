@@ -4,7 +4,7 @@ class TripSegmentsController < ApplicationController
   end
 
   def index_by_trip
-
+    @trip = Trip.find(params[:trip_id])
   end
 
   def index_ordered_by_origin

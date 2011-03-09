@@ -25,14 +25,21 @@ describe TripSegmentsController do
   end
 
   context "index_by_trip" do
-    it "should return successfully" do
+    before(:each) do
       @trip = stub_model(Trip)
+      Trip.stub!(:find).and_return(@trip)
+    end
+    it "should return successfully" do
+      get :index_by_trip, :trip_id => @trip.id
+      response.should be_success
+    end
+    it "should assign segments" do
+      @trip_seg1 = stub_model(TripSegment, :trip_id => @trip.id)
+      @trip_seg2 = stub_model(TripSegment, :trip_id => @trip.id)
 
       get :index_by_trip, :trip_id => @trip.id
 
-    end
-    it "should assign segments" do
-
+      assigns(:trip).should == @trip
     end
   end
 
