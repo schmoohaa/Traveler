@@ -30,6 +30,7 @@ Traveler::Application.routes.draw do
     get :index_all, :on => :collection
   end
 
+  resources :locales, :only => "index"       # <<< limit it to index for now.
 
   # *** Try screwing aorund with this ***
   # match "trip_segments/vacation_spot/:destination" => redirect("trip_segments/destination/:destination")

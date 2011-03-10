@@ -2,6 +2,9 @@ class TripSegment < ActiveRecord::Base
 
   belongs_to :trip
 
+  belongs_to :locale_origin, :class_name => "Locale"
+  belongs_to :locale_destination, :class_name => "Locale"
+
   validates :origin, :destination, :distance_in_miles, :presence => true    # Rails3 slightly different validation syntax
   validate :validation_origin_destination
   validates :distance_in_miles, :numericality => {:greater_than => 100}

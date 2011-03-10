@@ -6,9 +6,18 @@
 Miles Traveled: <%= @trip_segment.distance_in_miles %>
 </div>
 
+<div>
+  <%= static_map_of_addresses() %>
+</div>
+
+
+
 <%= render :partial => "back" %>
 
 
 <script>
   $("trip_segment_back").show();
 </script>
+
+
+[Locale.new(:name => "My House", :lat => 42.04, :lng => -87.79), Locale.new(:name => "That House", :lat => 22.04, :lng => -87.79)]

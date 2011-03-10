@@ -1,6 +1,6 @@
 <div id="<%= "trip_segment_"+trip_segment.id.to_s %>">
   <div>
-  <%= link_to trip_segment.name, trip_segment_path(trip_segment.id) %> [<%= link_to "delete", trip_segment_path(trip_segment.id), :remote => true, :method => "delete" %>]:
+  <%= link_to trip_segment.name, trip_segment_path(trip_segment.id) %> <%= link_to "map", locales_path %> [<%= link_to "delete", trip_segment_path(trip_segment.id), :remote => true, :method => "delete" %>]:
   </div>
   <div>
   <%= trip_segment.origin %>==>
