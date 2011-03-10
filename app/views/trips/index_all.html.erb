@@ -1,0 +1,20 @@
+<p>ALL TRIPS :: SEGMENT:</p>
+
+<p>joined</p>
+<% @trips.each do |trip| %>
+  <%= trip.tname%> :: <%= trip.sname%><br>
+<% end %>
+
+<p>included</p>
+<% @eager_trips.each do |trip| %>
+  <%= trip.name %><br>
+<% end %>
+
+<br>
+<br>
+<%= link_to "Back to All Trips", trips_path %>
+
+<div>
+<br>
+<%= link_to "Trip Segments", trip_segments_path %>
+</div>

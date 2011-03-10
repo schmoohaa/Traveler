@@ -4,7 +4,7 @@ class TripSegmentsController < ApplicationController
   end
 
   def index_by_trip
-    @trip = Trip.find(params[:trip_id])
+    @trip = Trip.find(params[:trip_id])   # <<<< "find" the call is made immediately; not relation lazy loading.
   end
 
   def index_ordered_by_origin
@@ -15,12 +15,13 @@ class TripSegmentsController < ApplicationController
     # In log: Trip Load (0.2ms)  SELECT "trips".* FROM "trips" WHERE (name LIKE '%Hong Kong%')
     # when explicitly attempted to be displayed. No logged query otherwise.
 
-    @hong_kong_trips = Trip.hong_kong
+    @hong_kong_trips_lazy = Trip.hong_kong   # Lazy
+    @hong_kong_trips_now = Trip.hong_kong.all  # Now - query executes immmediately.
 
   end
 
   def show
-    # @trip_segment = TripSegment.where(:id => params[:id])     <== returns an array, not a single occurance. not correct.
+    # @trip_segment = TripSegment.where(:id => params[:id])     <== returns an array, not a single occurence. not correct.
     @trip_segment = TripSegment.find(params[:id])
   end
 
@@ -56,7 +57,7 @@ class TripSegmentsController < ApplicationController
 
   def order_by_distance
     @destination = params[:destination]
-    @trip_segments = TripSegment.order_by_miles_to_destination(@destination)  # Rails3 use of scope method
+    @trip_segments = TripSegment.order_by_miles_to_destination(@destination)  # Rails3 use of scope method that reuses another scope.
   end
 
   def destroy

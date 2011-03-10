@@ -8,6 +8,22 @@ describe TripsController do
     end
   end
 
+  context "index_all" do
+    it "should return successfully" do
+      get :index_all
+      response.should be_success
+    end
+    it "should return index_all page" do
+      @trips = Trip.all
+      # Trip.stub(:super_chained_scope).and_return(ActiveRecord::Relation.new(nil,nil))   # <<< was trying to stub the relation; not sure how.
+      Trip.stub(:super_chained_scope).and_return(@trips)
+
+      get :index_all
+
+      assigns(:trips).should == @trips
+    end
+  end
+
   context "new" do
     it "should return successfully" do
       get :new

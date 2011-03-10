@@ -8,6 +8,37 @@ describe Trip do
     end
   end
 
+  context "super_chained_join_scope" do
+    it "should return the trip name and segment name, ordered by trip name, 10 segments, with segments included, where trip < today" do
+      10.times do |t|
+        trip = Trip.create!(:name => "Hong Kong - "+t.to_s)
+        3.times do |s|
+          TripSegment.create!(:name => "Segment-"+s.to_s, :origin => "X", :destination => "Y", :distance_in_miles => 1000, :trip_id => trip.id, :start_date => Time.now - 1.day)
+        end
+      end
+
+      # SELECT  trips.name, trip_segments.name FROM \"trips\"
+      # INNER JOIN \"trip_segments\" ON \"trip_segments\".\"trip_id\" = \"trips\".\"id\"
+      # WHERE (trip_segments.start_date < '2011-03-11 16:54:25.796449')
+      # ORDER BY trips.name DESC LIMIT 10
+      p Trip.super_chained_join_scope.to_sql
+      Trip.super_chained_join_scope.count.should == 5   # <<<< Returns 30; test is failing; limit not working? Need to figure out why.
+    end
+  end
+
+  context "super_chained_include_scope" do
+    it "should do eager loading, not n+1 problem" do
+      10.times do |t|
+         trip = Trip.create!(:name => "Hong Kong - "+t.to_s)
+         3.times do |s|
+           TripSegment.create!(:name => "Segment-"+s.to_s, :origin => "X", :destination => "Y", :distance_in_miles => 1000, :trip_id => trip.id, :start_date => Time.now - 1.day)
+         end
+       end
+       p Trip.super_chained_include_scope.to_sql
+       Trip.super_chained_include_scope.count.should == 5
+    end
+  end
+
   context "association to segments" do
     it "should reflect the association" do
        Trip.reflect_on_association(:trip_segments).should_not be_nil

@@ -26,7 +26,10 @@ Traveler::Application.routes.draw do
     get :index_ordered_by_origin, :as => :order_by_origin, :on => :collection
   end
 
-  resources :trips
+  resources :trips do
+    get :index_all, :on => :collection
+  end
+
 
   # *** Try screwing aorund with this ***
   # match "trip_segments/vacation_spot/:destination" => redirect("trip_segments/destination/:destination")
