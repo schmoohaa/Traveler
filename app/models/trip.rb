@@ -3,6 +3,8 @@ class Trip < ActiveRecord::Base
 
   has_many :trip_segments
 
+  scope :hong_kong, where("name LIKE ?", "%Hong Kong%")
+
   def total_miles
     trip_segments.sum("distance_in_miles")
   end

@@ -9,6 +9,14 @@ class TripSegmentsController < ApplicationController
 
   def index_ordered_by_origin
     @trip_segments = TripSegment.order("origin")  # Rails3 new method for ordering
+
+    # Add another query here it see how a returned Arel "relation" works.
+    # Should not produce a query in the log because it is never really used.
+    # In log: Trip Load (0.2ms)  SELECT "trips".* FROM "trips" WHERE (name LIKE '%Hong Kong%')
+    # when explicitly attempted to be displayed. No logged query otherwise.
+
+    @hong_kong_trips = Trip.hong_kong
+
   end
 
   def show

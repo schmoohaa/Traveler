@@ -31,3 +31,19 @@
 
 <br>
 <%= link_to "All Trips", trips_path %>
+
+
+
+<!--
+  NOTE: Output from the "batch_size" param on the find_each:
+  TripSegment Load (0.2ms)  SELECT "trip_segments".* FROM "trip_segments" WHERE ("trip_segments"."id" >= 0) ORDER BY trip_segments.id ASC LIMIT 2
+Rendered trip_segments/_trip_segment.html.erb (9.3ms)
+Rendered trip_segments/_trip_segment.html.erb (1.2ms)
+  TripSegment Load (0.3ms)  SELECT "trip_segments".* FROM "trip_segments" WHERE ("trip_segments"."id" > 11) ORDER BY trip_segments.id ASC LIMIT 2
+Rendered trip_segments/_trip_segment.html.erb (1.3ms)
+Rendered trip_segments/_trip_segment.html.erb (1.5ms)
+  TripSegment Load (0.3ms)  SELECT "trip_segments".* FROM "trip_segments" WHERE ("trip_segments"."id" > 13) ORDER BY trip_segments.id ASC LIMIT 2
+Rendered trip_segments/_trip_segment.html.erb (1.2ms)
+Rendered trip_segments/_trip_segment.html.erb (11.3ms)
+  TripSegment Load (0.3ms)  SELECT "trip_segments".* FROM "trip_segments" WHERE ("trip_segments"."id" > 15) ORDER BY trip_segments.id ASC LIMIT 2
+-->
