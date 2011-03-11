@@ -1,10 +1,9 @@
 <div id="<%= "trip_segment_"+trip_segment.id.to_s %>">
   <div>
-  <%= link_to trip_segment.name, trip_segment_path(trip_segment.id) %> <%= link_to "map", locales_path %> [<%= link_to "delete", trip_segment_path(trip_segment.id), :remote => true, :method => "delete" %>]:
+  <%= link_to trip_segment.name, trip_segment_path(trip_segment.id) %> <%= link_to "map", locales_seg_path(trip_segment.locale_origin.name,trip_segment.locale_destination.name) %> [<%= link_to "delete", trip_segment_path(trip_segment.id), :remote => true, :method => "delete" %>]:
   </div>
   <div>
-  <%= trip_segment.origin %>==>
-  <%= link_to trip_segment.destination, destination_path(trip_segment.destination), :remote => true %>
+  <%= trip_segment.locale_origin.name %>==> <%= link_to trip_segment.locale_destination.name, destination_path(trip_segment.locale_destination_id), :remote => true %> <%= link_to "map", locale_path(trip_segment.locale_destination_id) %>
   </div>
   <div>
   <%= trip_segment.distance_in_miles %> miles

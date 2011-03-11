@@ -5,7 +5,7 @@ class TripSegment < ActiveRecord::Base
   belongs_to :locale_origin, :class_name => "Locale"
   belongs_to :locale_destination, :class_name => "Locale"
 
-  validates :origin, :destination, :distance_in_miles, :presence => true    # Rails3 slightly different validation syntax
+  validates :distance_in_miles, :presence => true    # Rails3 slightly different validation syntax
   validate :validation_origin_destination
   validates :distance_in_miles, :numericality => {:greater_than => 100}
   validates_datetime :start_date, :allow_nil => true
@@ -18,7 +18,7 @@ class TripSegment < ActiveRecord::Base
 
 
   def validation_origin_destination
-    errors.add(:base,"Origin and Destination must be different") if origin == destination    # Rails3 slightly different?
+    errors.add(:base,"Origin and Destination must be different") if locale_origin_id == locale_destination_id    # Rails3 slightly different?
   end
 
   def generate_trip_segment_name

@@ -43,7 +43,12 @@ class TripSegmentsController < ApplicationController
   end
 
   def create
-    @trip_segment = TripSegment.new(params[:trip_segment])
+    org_location = Locale.location(params[:origin])
+    org_location = Locale.create!(:name => params[:origin]) if org_location.empty?
+    dest_location = Locale.location(params[:destination])
+    dest_location = Locale.create!(:name => params[:destination]) if dest_location.empty?
+
+    @trip_segment = TripSegment.new(params[:trip_segment].merge({:locale_origin_id => org_location.id, :locale_destination_id => dest_location.id} ))
     if @trip_segment.save
       redirect_to trip_segments_path
     else

@@ -2,12 +2,15 @@ require 'spec_helper'
 
 describe TripSegment do
   before(:each) do
+    @origin_id = 1
+    @destination_id = 2
     @origin = "Chicago, Illinois"
     @destination = "Hong Kong, Hong Kong"
     @other_destination = "Kathmandu, Nepal"
     @valid_start_date = DateTime.new(2008, 9, 11, 11, 55, 0, 0)
     @valid_end_date = DateTime.new(2008, 9, 12, 17, 55, 0, 0)
     @distance_traveled = rand(6000)+1000
+
 
     @trip = stub_model(Trip)
   end
@@ -16,39 +19,44 @@ describe TripSegment do
       TripSegment.new.should_not be_valid
     end
     it "should require a destination" do
-      TripSegment.new(:origin => @origin, :destination => @destination, :distance_in_miles => @distance_traveled, :trip_id => @trip.id).should be_valid
+      TripSegment.new(:locale_origin_id => @origin_id, :locale_destination_id => @destination_id, :distance_in_miles => @distance_traveled, :trip_id => @trip.id).should be_valid
     end
     it "should prevent origin and destination from being the same" do
-      TripSegment.new(:origin => @origin, :destination => @origin, :distance_in_miles => @distance_traveled).should_not be_valid
-      TripSegment.new(:origin => @origin, :destination => @destination, :distance_in_miles => @distance_traveled, :trip_id => @trip.id).should be_valid
+      TripSegment.new(:locale_origin_id => @origin_id, :locale_destination_id => @origin_id, :distance_in_miles => @distance_traveled).should_not be_valid
+      TripSegment.new(:locale_origin_id => @origin_id, :locale_destination_id => @destination_id, :distance_in_miles => @distance_traveled, :trip_id => @trip.id).should be_valid
     end
     it "should require valid start date" do
-      TripSegment.new(:origin => @origin, :destination => @destination, :start_date => @valid_start_date, :distance_in_miles => @distance_traveled, :trip_id => @trip.id).should be_valid
+      TripSegment.new(:locale_origin_id => @origin_id, :locale_destination_id => @destination_id, :start_date => @valid_start_date, :distance_in_miles => @distance_traveled, :trip_id => @trip.id).should be_valid
     end
     it "should require valid end date" do
-      TripSegment.new(:origin => @origin, :destination => @destination, :start_date => @valid_start_date, :end_date => @valid_end_date, :distance_in_miles => @distance_traveled, :trip_id => @trip.id).should be_valid
+      TripSegment.new(:locale_origin_id => @origin_id, :locale_destination_id => @destination_id, :start_date => @valid_start_date, :end_date => @valid_end_date, :distance_in_miles => @distance_traveled, :trip_id => @trip.id).should be_valid
     end
     it "should require mileage for any trip segment" do
-       TripSegment.new(:origin => @origin, :destination => @destination, :start_date => @valid_start_date, :end_date => @valid_end_date, :trip_id => @trip.id).should_not be_valid
+       TripSegment.new(:locale_origin_id => @origin_id, :locale_destination_id => @destination_id, :start_date => @valid_start_date, :end_date => @valid_end_date, :trip_id => @trip.id).should_not be_valid
      end
     it "should require distance to be numeric" do
-      TripSegment.new(:origin => @origin, :destination => @destination, :start_date => @valid_start_date, :end_date => @valid_end_date, :distance_in_miles => "I went 10,000 miles!", :trip_id => @trip.id).should_not be_valid
+      TripSegment.new(:locale_origin_id => @origin_id, :locale_destination_id => @destination_id, :start_date => @valid_start_date, :end_date => @valid_end_date, :distance_in_miles => "I went 10,000 miles!", :trip_id => @trip.id).should_not be_valid
     end
     it "should require distance to be greater than 100" do
-      TripSegment.new(:origin => @origin, :destination => @destination, :start_date => @valid_start_date, :end_date => @valid_end_date, :distance_in_miles => 50, :trip_id => @trip.id).should_not be_valid
+      TripSegment.new(:locale_origin_id => @origin_id, :locale_destination_id => @destination_id, :start_date => @valid_start_date, :end_date => @valid_end_date, :distance_in_miles => 50, :trip_id => @trip.id).should_not be_valid
     end
     it "should require that the segment be associated with a trip" do
-      TripSegment.new(:origin => @origin, :destination => @destination, :start_date => @valid_start_date, :end_date => @valid_end_date, :distance_in_miles => 1000, :trip_id => @trip.id).should be_valid
+      TripSegment.new(:locale_origin_id => @origin_id, :locale_destination_id => @destination_id, :start_date => @valid_start_date, :end_date => @valid_end_date, :distance_in_miles => 1000, :trip_id => @trip.id).should be_valid
     end
   end
 
   context "adding trips" do
     it "should add a trip" do
-      trip = TripSegment.create(:origin => @origin, :destination => @destination, :start_date => @valid_start_date, :end_date => @valid_end_date, :distance_in_miles => @distance_traveled, :trip_id => @trip.id)
+      trip = TripSegment.create(:locale_origin_id => @origin_id, :locale_destination_id => @destination_id, :start_date => @valid_start_date, :end_date => @valid_end_date, :distance_in_miles => @distance_traveled, :trip_id => @trip.id)
       trip.save!.should be_true
     end
     it "should auto-generate name to concatenated origin-dest if not entered" do
-      trip = TripSegment.create(:origin => @origin, :destination => @destination, :start_date => @valid_start_date, :end_date => @valid_end_date, :distance_in_miles => @distance_traveled, :trip_id => @trip.id)
+      trip.should_receive(:articles).and_return(@articles)
+      trip.should_receive(:articles).and_return(@articles)
+
+
+
+      trip = TripSegment.create(:locale_origin_id => @origin_id, :locale_destination_id => @destination_id, :start_date => @valid_start_date, :end_date => @valid_end_date, :distance_in_miles => @distance_traveled, :trip_id => @trip.id)
       trip.name.should == "#{@origin} - #{@destination}"
     end
     it "should set name to what was entered (not auto-generate)" do
@@ -59,7 +67,7 @@ describe TripSegment do
 
   context "scope on destination" do
     it "should return a relation of segments of destination value" do
-      TripSegment.create(:origin => @origin, :destination => @destination, :start_date => @valid_start_date, :end_date => @valid_end_date, :distance_in_miles => @distance_traveled, :trip_id => @trip.id)
+      TripSegment.create(:locale_origin_id => @origin_id, :locale_destination_id => @destination_id, :start_date => @valid_start_date, :end_date => @valid_end_date, :distance_in_miles => @distance_traveled, :trip_id => @trip.id)
       TripSegment.create(:origin => @origin, :destination => @other_destination, :start_date => @valid_start_date, :end_date => @valid_end_date, :distance_in_miles => @distance_traveled, :trip_id => @trip.id)
 
       TripSegment.destination(@destination).count.should == 1
@@ -112,6 +120,9 @@ describe TripSegment do
       end
 
       TripSegment.longest_segment.should == @longest_segment
+    end
+    it "should return nothing if no segments exists" do
+      TripSegment.longest_segment.should == ""
     end
   end
 

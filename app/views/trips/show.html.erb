@@ -1,4 +1,4 @@
-<p>TripName: <%= @trip.name %></p>
+<p>TripName: <%= @trip.name %> <%= link_to "map", all_locales_trip_path(@trip.id)%></p>
 
 <% if @trip.trip_segments.exists? %>
   <div>
@@ -6,7 +6,7 @@
   Longest segment: <%= @trip.longest_segment_of_trip.name %> of <%= @trip.longest_segment_of_trip.distance_in_miles %> miles<br>
   <br>
 <% end %>
-Longest segment (all trips): <%= TripSegment.longest_segment.distance_in_miles %>
+Longest segment (all trips): <%= longest_segment_length %>
 
 
 </div>

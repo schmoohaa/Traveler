@@ -122,12 +122,14 @@ describe TripSegmentsController do
       post :create, {
         :trip_segment => {
             :name       => 'Best Trip Ever!',
-            :origin => 'Chicago, Illinois',
-            :destination => 'Singapore, Singapore',
+            :locale_origin_id => 1,
+            :locale_destination_id => 2,
             :start_date => Time.now,
             :end_date => Time.new + 5.days,
             :distance_in_miles => @distance_traveled
-          }
+          },
+          :origin => "Hong Kong, Hong Kong",
+          :destination => "Singapore, Singapore"
         }.update(params)
     end
   end
@@ -138,15 +140,12 @@ describe TripSegmentsController do
       response.should be_success
     end
     it "should list trip segments in order" do
-      trip1 = TripSegment.create!(:origin=>"sin",:destination=>"dbx",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
-      trip2 = TripSegment.create!(:name=>"RTW Trip: seg 1",:origin=>"ord",:destination=>"hkg",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
-      trip3 = TripSegment.create!(:origin=>"hkg",:destination=>"sin",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
+      @trip_segments = [stub_model(TripSegment)]
+      TripSegment.stub!(:order).and_return(@trip_segments)
 
       xhr :get, :index_ordered_by_origin
 
-      assigns(:trip_segments).first.should == trip3
-      assigns(:trip_segments).last.should == trip1
-      assigns(:trip_segments).count.should == 3
+      assigns(:trip_segments).count.should == 1
     end
   end
 
@@ -156,16 +155,12 @@ describe TripSegmentsController do
        response.should be_success
     end
     it "should return content with some trips visible, others not" do
-      trip1 = TripSegment.create!(:origin=>"Chicago",:destination=>"Dubai, UAE",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
-      trip2 = TripSegment.create!(:name=>"RTW Trip: seg 1",:origin=>"Chicago",:destination=>"Tokyo, Japan",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
-      trip3 = TripSegment.create!(:origin=>"Paris, France",:destination=>"Prague, Czech Republic",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
-      trip4 = TripSegment.create!(:origin=>"Istanbul, Turkey",:destination=>"Dubai, UAE",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
-      trip5 = TripSegment.create!(:origin=>"Dubai, UAE",:destination=>"London, Heathrow",:start_date=>Time.now, :distance_in_miles => @distance_traveled)
+      @trip_segments = [stub_model(TripSegment)]
+      TripSegment.stub!(:destination).and_return(@trip_segments)
 
       xhr :get, :limit_by_destination, :destination => "Dubai, UAE"
 
-      assigns(:trip_segments).should include(trip1,trip4)
-      assigns(:trip_segments).should_not include(trip2,trip3,trip5)
+      assigns(:trip_segments).count.should == 1
     end
   end
 
