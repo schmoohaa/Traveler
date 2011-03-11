@@ -1,4 +1,9 @@
 class Locale < ActiveRecord::Base
 
-  def to_s; name; end
+  geocoded_by :name, :latitude  => :lat, :longitude => :lng
+  after_validation :geocode
+
+  def to_s
+     name
+  end
 end

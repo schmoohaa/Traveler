@@ -16,6 +16,7 @@ gem 'spork', '~> 0.9.0.rc'
 gem 'validates_timeliness', '~> 3.0.2'
 
 gem "bhm-google-maps"
+gem "geocoder"
 
 # Use unicorn as the web server
 # gem 'unicorn'
