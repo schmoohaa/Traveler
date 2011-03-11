@@ -1,4 +1,4 @@
-<p>TripName: <%= @trip.name %> <%= link_to "map", all_locales_trip_path(@trip.id)%></p>
+<p>TripName: <%= @trip.name %> <%= link_to "map", all_locales_trip_path(@trip.id) if @trip.trip_segments.exists? %></p>
 
 <% if @trip.trip_segments.exists? %>
   <div>

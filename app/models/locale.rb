@@ -1,7 +1,7 @@
 class Locale < ActiveRecord::Base
 
   geocoded_by :name, :latitude  => :lat, :longitude => :lng
-  after_validation :geocode
+  before_save :geocode, :if => :in_dev?
 
   validates :name, :uniqueness => true
 
@@ -9,5 +9,10 @@ class Locale < ActiveRecord::Base
 
   def to_s
     name
+  end
+
+  def in_dev?
+    false
+    # Rails.env.development? # <<< lame, but could not figure out how to tell gem not to call google in test.
   end
 end

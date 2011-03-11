@@ -107,14 +107,14 @@ describe TripSegmentsController do
       do_post_new_trip
       response.should redirect_to(trip_segments_path)
     end
-    it "should create add new trip_segment" do
+    it "should create new trip_segment" do
       expect { do_post_new_trip }.to change(TripSegment, :count).by(1)
     end
     it "should not create a new trip if errors" do
-      expect { do_post_new_trip(:trip_segment => {:origin => nil} ) }.to change(TripSegment, :count).by(0)
+      expect { do_post_new_trip(:trip_segment => {:locale_origin_id => nil} ) }.to change(TripSegment, :count).by(0)
     end
     it "should return to form if errors" do
-      do_post_new_trip(:trip_segment => {:origin => nil} )
+      do_post_new_trip(:trip_segment => {:locale_origin_id => nil} )
       response.should render_template(:new)
     end
 

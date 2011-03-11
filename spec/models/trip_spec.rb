@@ -13,7 +13,7 @@ describe Trip do
       10.times do |t|
         trip = Trip.create!(:name => "Hong Kong - "+t.to_s)
         3.times do |s|
-          TripSegment.create!(:name => "Segment-"+s.to_s, :origin => "X", :destination => "Y", :distance_in_miles => 1000, :trip_id => trip.id, :start_date => Time.now - 1.day)
+          TripSegment.create!(:name => "Segment-"+s.to_s, :locale_origin_id => 1, :locale_destination_id => 2, :distance_in_miles => 1000, :trip_id => trip.id, :start_date => Time.now - 1.day)
         end
       end
 
@@ -31,7 +31,7 @@ describe Trip do
       10.times do |t|
          trip = Trip.create!(:name => "Hong Kong - "+t.to_s)
          3.times do |s|
-           TripSegment.create!(:name => "Segment-"+s.to_s, :origin => "X", :destination => "Y", :distance_in_miles => 1000, :trip_id => trip.id, :start_date => Time.now - 1.day)
+           TripSegment.create!(:name => "Segment-"+s.to_s, :locale_origin_id => 1, :locale_destination_id => 2, :distance_in_miles => 1000, :trip_id => trip.id, :start_date => Time.now - 1.day)
          end
        end
        p Trip.super_chained_include_scope.to_sql
@@ -63,10 +63,10 @@ describe Trip do
 
       10.times do
         miles = rand(3000)+1000
-        TripSegment.create!(:origin => "X", :destination => "Y", :distance_in_miles => miles, :trip_id => trip_to_be_totaled.id)
+        TripSegment.create!(:locale_origin_id => 1, :locale_destination_id => 2, :distance_in_miles => miles, :trip_id => trip_to_be_totaled.id)
         total_miles += miles
       end
-      TripSegment.create!(:origin => "X", :destination => "Y", :distance_in_miles => 10000, :trip_id => other_trip.id)
+      TripSegment.create!(:locale_origin_id => 1, :locale_destination_id => 2, :distance_in_miles => 10000, :trip_id => other_trip.id)
 
       trip_to_be_totaled.total_miles.should == total_miles
     end
@@ -79,13 +79,13 @@ describe Trip do
       max_miles = 0
 
       10.times do
-        seg = TripSegment.create!(:origin => "X", :destination => "Y", :distance_in_miles => rand(3000)+1000, :trip_id => this_trip.id)
+        seg = TripSegment.create!(:locale_origin_id => 1, :locale_destination_id => 2, :distance_in_miles => rand(3000)+1000, :trip_id => this_trip.id)
         if seg.distance_in_miles > max_miles   # <<< is there a more ruby-clever way of doing this?
           @longest_segment = seg
           max_miles = seg.distance_in_miles
         end
       end
-      TripSegment.create!(:origin => "X", :destination => "Y", :distance_in_miles => 10000000, :trip_id => other_trip.id)
+      TripSegment.create!(:locale_origin_id => 1, :locale_destination_id => 2, :distance_in_miles => 10000000, :trip_id => other_trip.id)
 
       this_trip.longest_segment_of_trip.should == @longest_segment
     end
